@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sankalp Library</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b2d5c">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = "https://sfgmmgfrhxulwgcoyqvk.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmZ21tZ2ZyaHh1bHdnY295cXZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0NDk1MjUsImV4cCI6MjEwNTAyNTUyNX0.ZilydtgHoCfS_Pj6VoNNul0MV9dmV0faZ1iqLB54JA4";
+
+  // Password recovery link
+  if (window.location.hash && window.location.hash.includes("type=recovery")) {
+    window.location.replace("reset-password.html" + window.location.hash);
+  } else {
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { persistSession: true, autoRefreshToken: true, storage: window.localStorage }
+    });
+    supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
+      if (session && session.user) {
+        try {
+          const { data: isAdmin } = await supabaseClient.rpc("is_admin");
+          window.location.replace(isAdmin === true ? "admin.html" : "dashboard.html");
+        } catch (e) {
+          window.location.replace("dashboard.html");
+        }
+      } else {
+        window.location.replace("login.html");
+      }
+    }).catch(() => {
+      window.location.replace("login.html");
+    });
+  }
+</script>
+</head>
+<body>
+  <p style="font-family: Arial, sans-serif; text-align:center; margin-top:40px; color:#0b2d5c;">Loading…</p>
+</body>
+</html>

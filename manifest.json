@@ -1,0 +1,11 @@
+{
+  "name": "Sankalp Library",
+  "short_name": "Sankalp",
+  "description": "Student login, attendance, and fees portal",
+  "start_url": "/login.html",
+  "display": "standalone",
+  "background_color": "#f4f6f8",
+  "theme_color": "#2563eb",
+  "orientation": "portrait",
+  "icons": []
+}
